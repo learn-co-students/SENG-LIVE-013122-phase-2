@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 /* 
 use state to implement a "clap" feature
@@ -24,12 +24,13 @@ function ProjectItem({
   link,
   image
 }) {
+  const [clapCount, setClapCount] = useState(0);
   // optionally we can destructure individual properties from project
   return (
     <li className="card">
       <figure className="image">
         <img src={image} alt={name} />
-        <button className="claps">👏{0}</button>
+        <button onClick={() => setClapCount(clapCount => clapCount + 1)} className="claps">👏{clapCount}</button>
       </figure>
 
       <section className="details">
