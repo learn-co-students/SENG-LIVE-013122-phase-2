@@ -20,13 +20,17 @@ function App() {
     setIsDarkMode(isDarkMode => !isDarkMode)
   }
 
+  function onCreateProject(newProject) {
+    setProjects(projects => [...projects, newProject])
+  }
+
   return (
     <div className={isDarkMode ? "App" : "App light"}>
       <Header
         isDarkMode={isDarkMode}
         onToggleDarkMode={onToggleDarkMode}
       />
-      <ProjectForm />
+      <ProjectForm onCreateProject={onCreateProject} />
       <button onClick={() => fetchProjects()}>Load Projects</button>
       <ProjectList projects={projects} />
     </div>
