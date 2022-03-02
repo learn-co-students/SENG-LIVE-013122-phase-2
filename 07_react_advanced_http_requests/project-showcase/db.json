@@ -16,16 +16,16 @@
       "phase": 4,
       "link": "https://bookher.netlify.app/new_project",
       "image": "https://i.imgur.com/INs84Uk.png",
-      "claps": 0
+      "claps": 5
     },
     {
       "id": 3,
-      "name": "Code Bucket",
+      "name": "Code Bucket #3",
       "about": "Web-based CSS, JS and HTML Editor",
       "phase": 4,
       "link": "https://code-bucket.netlify.app",
       "image": "https://i.imgur.com/Hz84TA2.png",
-      "claps": 0
+      "claps": 7
     },
     {
       "id": 11,
@@ -97,51 +97,6 @@
       "phase": 4,
       "link": "https://gamesrx.netlify.app",
       "image": "https://i.imgur.com/Japzh6v.png",
-      "claps": 0
-    },
-    {
-      "name": "todo app test",
-      "about": "again",
-      "phase": "3",
-      "link": "google.com",
-      "image": "https://i.imgur.com/XOnaclL.png",
-      "id": 26,
-      "claps": 0
-    },
-    {
-      "name": "todo app test",
-      "about": "again",
-      "phase": "3",
-      "link": "google.com",
-      "image": "https://i.imgur.com/XOnaclL.png",
-      "id": 27,
-      "claps": 0
-    },
-    {
-      "name": "todo app test",
-      "about": "again",
-      "phase": "3",
-      "link": "google.com",
-      "image": "https://i.imgur.com/XOnaclL.png",
-      "id": 28,
-      "claps": 0
-    },
-    {
-      "name": "hello",
-      "about": "there",
-      "phase": "1",
-      "link": "hello",
-      "image": "https://i.imgur.com/XOnaclL.png",
-      "id": 29,
-      "claps": 0
-    },
-    {
-      "name": "hello",
-      "about": "there",
-      "phase": "1",
-      "link": "hello",
-      "image": "https://i.imgur.com/XOnaclL.png",
-      "id": 30,
       "claps": 0
     }
   ]

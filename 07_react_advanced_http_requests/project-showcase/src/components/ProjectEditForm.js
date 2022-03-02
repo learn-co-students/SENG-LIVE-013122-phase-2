@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react'
 
-function ProjectEditForm({ projectToEdit, completeEditing }) {
-  const [formState, setFormState] = useState({ ...projectToEdit })
+function ProjectEditForm({ projectToEdit, onUpdateProject }) {
+  const [formState, setFormState] = useState({
+    name: "",
+    about: "",
+    phase: "",
+    link: "",
+    image: ""
+  })
   const { name, about, phase, link, image } = formState;
 
   useEffect(() => {
     fetch(`http://localhost:4000/projects/${projectToEdit}`)
       .then(res => res.json())
       .then(project => setFormState(project))
-  }, [])
+  }, [projectToEdit])
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -18,7 +24,17 @@ function ProjectEditForm({ projectToEdit, completeEditing }) {
   function handleSubmit(event) {
     event.preventDefault();
     // fill me in!
-    completeEditing();
+    fetch(`http://localhost:4000/projects/${projectToEdit}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formState)
+    })
+      .then(res => res.json())
+      .then(updatedProject => {
+        onUpdateProject(updatedProject)
+      })
   }
   
   return (

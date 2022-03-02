@@ -2,30 +2,50 @@ import React, { useState } from "react";
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
 
-function ProjectItem({
+function ProjectListItem({
   id,
   name,
   about,
   phase,
   link,
   image,
-  enterProjectEditModeFor
+  claps,
+  enterProjectEditModeFor,
+  onDeleteProject,
+  onUpdateProject
 }) {
-  const [clapCount, setClapCount] = useState(0);
   // optionally we can destructure individual properties from project
 
   function handleEditClick() {
     enterProjectEditModeFor(id);
   }
 
-  function handleDeleteClick() {
+  function handleClapClick() {
+    fetch(`http://localhost:4000/projects/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({claps: claps + 1})
+    })
+      .then(res => res.json())
+      .then(updatedProject => {
+        onUpdateProject(updatedProject)
+      })
+  }
 
+  function handleDeleteClick() {
+    console.log('delete me!')
+    fetch(`http://localhost:4000/projects/${id}`, {
+      method: 'DELETE'
+    })
+    onDeleteProject(id);
   }
   return (
     <li className="card">
       <figure className="image">
         <img src={image} alt={name} />
-        <button onClick={() => setClapCount(clapCount => clapCount + 1)} className="claps">👏{clapCount}</button>
+        <button onClick={handleClapClick} className="claps">👏{claps}</button>
       </figure>
 
       <section className="details">
@@ -57,6 +77,6 @@ function ProjectItem({
   );
 }
 
-export default ProjectItem;
+export default ProjectListItem;
 
 
