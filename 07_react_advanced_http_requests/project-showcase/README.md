@@ -19,22 +19,22 @@ To allow users to edit projects, some UI changes were necessary:
   - Add conditional logic to check if `projectToEdit` exists:
     - if it does, render `ProjectEditForm`, passing `projectToEdit` and `completeEditing` as props
     - if it doesn't, render `ProjectForm` as before
-  - define a `enterEditModeFor` callback function that will be called when a user clicks the edit button and store the chosen project in the piece of App state
-  - pass the `enterEditModeFor` callback to `ProjectList` -> then to `ProjectListItem`
+  - define a `enterProjectEditModeFor` callback function that will be called when a user clicks the edit button and store the chosen project in the piece of App state
+  - pass the `enterProjectEditModeFor` callback to `ProjectList` -> then to `ProjectListItem`
 - Within the `ProjectEditForm` component, we need to:
   - set up our `formState` as an object in this case, spread out from `projectToEdit` as an initial value
   - add a `handleChange` event handler that will dynamically (and non-destructively) update the object
   - add a `handleSubmit` event handler that will
 - In `ProjectList` we need to:
-  - accept `enterEditModeFor` as a prop
-  - pass `enterEditModeFor` as a prop to each `ProjectListItem`
+  - accept `enterProjectEditModeFor` as a prop
+  - pass `enterProjectEditModeFor` as a prop to each `ProjectListItem`
   - pass the entire `project` as a prop to `ProjectListItem` instead of spreading out its properties
 - In `ProjectListItem` we need to:
-  - accept `enterEditModeFor` as a prop
+  - accept `enterProjectEditModeFor` as a prop
   - accept `project` as a prop (instead of destructuring its properties within the parameter list)
   - destructure the properties of `project` within the body of the component function (so we can still access them within our JSX)
   - Add a button with an edit icon within the JSX
-  - add an event listener to the edit icon in ProjectListItem that invokes the `enterEditModeFor` callback with the `project` received as a prop as its argument.
+  - add an event listener to the edit icon in ProjectListItem that invokes the `enterProjectEditModeFor` callback with the `project` received as a prop as its argument.
 - In `ProjectForm` we need to 
   - accept `projectToEdit` as a prop
   - refactor component to use a `formState` object in state 
@@ -93,6 +93,15 @@ function completeEditing() {
 }
 ```
 
+### define a `enterProjectEditModeFor` callback function that will be called when a user clicks the edit button and store the chosen project in the piece of App state
+
+```js
+function enterProjectEditModeFor(projectId) {
+  const project = projects.find(p => p.id === projectId)
+  setProjectToEdit(project);
+}
+```
+
 ### Import ProjectEditForm
 
 ```js
@@ -113,48 +122,49 @@ function renderForm() {
     )
   } else {
     return (
-      <ProjectForm
-        handleAddProject={handleAddProject}
-      />
+      <ProjectForm onCreateProject={onCreateProject} />
     )
   }
 }
 // and update the JSX to replace
-// <ProjectForm
-//   handleAddProject={handleAddProject}
-// />
+// <ProjectForm onCreateProject={onCreateProject} />
 // with
 {renderForm()}
 ```
-### define a `enterEditModeFor` callback function that will be called when a user clicks the edit button and store the chosen project in the piece of App state
-
-```js
-function enterEditModeFor(project) {
-  setProjectToEdit(project);
-}
-```
-#### pass the `enterEditModeFor` callback to `ProjectList` -> then to `ProjectListItem`
+#### pass the `enterProjectEditModeFor` callback to `ProjectList` -> then to `ProjectListItem`
 
 ```js
 // <ProjectList projects={projects} />
 // will become
 <ProjectList 
   projects={projects} 
-  enterEditModeFor={enterEditModeFor}
+  enterProjectEditModeFor={enterProjectEditModeFor}
 />
 ```
 
 ## Within the `ProjectEditForm` component, we need to:
+
+### add the `{ useState }` hook to your import
+
+```js
+import React, { useState } from 'react'
+```
 
 ### accept `projectToEdit`, and `completeEditing` as props
 
 ```js
 function ProjectEditForm({ projectToEdit, completeEditing }) {
 ```
-### set up our `formState` as an object in this case, spread out from `projectToEdit` as an initial value
+### set up our `formState` as an object in this case, we're going to load the object data from the API based on `projectToEdit`
 
 ```js
-const [formState, setFormState] = useState({...projectToEdit})
+const [formState, setFormState] = useState({
+  name: "",
+  about: "",
+  phase: "",
+  link: "", 
+  image: ""
+})
 ```
 
 ### Copy JSX from ProjectForm as a starting point:
@@ -254,15 +264,25 @@ function handleSubmit(event) {
 }
 ```
 
-## In `ProjectList` we need to
-
-### accept `enterEditModeFor` as a prop
+### add a useEffect hook that will load the project data from the api into the form state.
 
 ```js
-function ProjectList({projects, enterEditModeFor}) {
+useEffect(() => {
+  fetch(`http://localhost:4000/projects/${projectToEdit}`)
+    .then(res => res.json())
+    .then(project => setFormState(project))
+})
 ```
 
-### pass `enterEditModeFor` as a prop to each `ProjectListItem`
+## In `ProjectList` we need to
+
+### accept `enterProjectEditModeFor` as a prop
+
+```js
+function ProjectList({projects, enterProjectEditModeFor}) {
+```
+
+### pass `enterProjectEditModeFor` as a prop to each `ProjectListItem`
 
 ```js
 const projectItems = searchResults.map((project) => {
@@ -270,28 +290,14 @@ const projectItems = searchResults.map((project) => {
     <ProjectListItem 
       key={project.id} 
       {...project} 
-      enterEditModeFor={enterEditModeFor}
-    />
-  );
-});
-```
-
-### pass the entire `project` as a prop to `ProjectListItem` instead of spreading out its properties
-
-```jsx
-const projectItems = searchResults.map((project) => {
-  return (
-    <ProjectListItem 
-      key={project.id} 
-      project={project} 
-      enterEditModeFor={enterEditModeFor}
+      enterProjectEditModeFor={enterProjectEditModeFor}
     />
   );
 });
 ```
 ## In `ProjectListItem` we need to:
 
-### accept `enterEditModeFor` and `project` as props
+### accept `enterProjectEditModeFor` and `project` as props
 
 ```jsx
 function ProjectItem({
@@ -307,22 +313,15 @@ function ProjectItem({
 becomes
 
 ```jsx
-function ProjectItem({ project, enterEditModeFor }) {
-```
-
-### destructure the properties of `project` within the body of the component function (so we can still access them within our JSX)
-
-We need to do this because we're now passing the whole `project` as a prop rather than individual properties one by one.
-
-```js
-const {
+function ProjectItem({
   id,
   name,
   about,
   phase,
   link,
-  image
-} = project;
+  image,
+  enterProjectEditModeFor
+}) {
 ```
   
 ### Add a button with an edit icon within the JSX
@@ -353,11 +352,17 @@ import { FaPencilAlt, FaTrash } from 'react-icons/fa';
   gap: 0.25rem;
 }
 ```
-### add an event listener to the edit icon in ProjectListItem that invokes the `enterEditModeFor` callback with the `project` received as a prop as its argument.
+### add an event listener to the edit icon in ProjectListItem that invokes the `enterProjectEditModeFor` callback with the project's `id` received as a prop as its argument.
+
+```js
+function handleEditClick() {
+  enterProjectEditModeFor(id);
+}
+```
 
 ```js
 <button
-  onClick={() => enterEditModeFor(project)}
+  onClick={handleEditClick}
 >
   <FaPencilAlt />
 </button>

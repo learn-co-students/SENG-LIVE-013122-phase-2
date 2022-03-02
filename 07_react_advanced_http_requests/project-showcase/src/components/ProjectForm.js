@@ -23,7 +23,7 @@ function ProjectForm({ onCreateProject }) {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(formState)
+      body: JSON.stringify({ ...formState, claps: 0 })
     })
       .then(response => response.json())
       .then(savedProject => {

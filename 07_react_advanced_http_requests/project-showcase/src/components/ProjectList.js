@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ProjectListItem from "./ProjectListItem";
 
-function ProjectList({ projects }) {
+function ProjectList({ projects, enterProjectEditModeFor }) {
   const [searchText, setSearchText] = useState("");
 
   const searchResults = projects.filter(project => {
@@ -15,7 +15,7 @@ function ProjectList({ projects }) {
   // map over the array of project objects => return an array of ProjectItem components
   // [{},{},{},{}] => [<ProjectListItem />, <ProjectListItem />, <ProjectListItem />, <ProjectListItem />]
   const projectItems = searchResults.map((project) => {
-    return <ProjectListItem key={project.id} {...project} />;
+    return <ProjectListItem key={project.id} {...project} enterProjectEditModeFor={enterProjectEditModeFor} />;
   });
 
   return (

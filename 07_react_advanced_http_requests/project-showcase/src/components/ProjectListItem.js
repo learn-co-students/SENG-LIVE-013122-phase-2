@@ -1,20 +1,6 @@
 import React, { useState } from "react";
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-/* 
-use state to implement a "clap" feature
-when the clap button is clicked, 
-update the number of claps for the project
-
-- import the useState hook
-- create your initial state
-- update the JSX to use the state variable to display the number of claps
-- add an event listener to the button for a click event
-- when the button is clicked, update state and increment the number of claps
-
-- BONUS: fix the accessibility issue with the button!
-
-https://reactwithhooks.netlify.app/docs/handling-events.html
-*/
 
 function ProjectItem({
   id,
@@ -22,10 +8,19 @@ function ProjectItem({
   about,
   phase,
   link,
-  image
+  image,
+  enterProjectEditModeFor
 }) {
   const [clapCount, setClapCount] = useState(0);
   // optionally we can destructure individual properties from project
+
+  function handleEditClick() {
+    enterProjectEditModeFor(id);
+  }
+
+  function handleDeleteClick() {
+
+  }
   return (
     <li className="card">
       <figure className="image">
@@ -45,6 +40,18 @@ function ProjectItem({
 
       <footer className="extra">
         <span className="badge blue">Phase {phase}</span>
+        <div className="manage">
+          <button
+            onClick={handleEditClick}
+          >
+            <FaPencilAlt />
+          </button>
+          <button
+            onClick={handleDeleteClick}
+          >
+            <FaTrash />
+          </button>
+        </div>
       </footer>
     </li>
   );
