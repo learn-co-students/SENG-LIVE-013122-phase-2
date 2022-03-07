@@ -111,6 +111,16 @@ header h1 a:hover {
 }
 ```
 
+## Add styles for ProjectDetail to ensure image large images don't overflow
+
+```css
+.project-image img {
+  width: 100%;
+  max-width: 1000px;
+  display: block;
+  margin-bottom: 2rem;
+}
+```
 ## Add a ProjectDetail component
 
 ```js
@@ -125,7 +135,7 @@ function ProjectDetail() {
   const id = 1;
 
   useEffect(() => {
-    fetch(`http://localhost:3000/projects/${id}`)
+    fetch(`http://localhost:4000/projects/${id}`)
       .then((r) => r.json())
       .then((project) => {
         setProject(project);
@@ -174,7 +184,50 @@ export default ProjectDetail;
 
 ## Add ProjectDetail to App.js
 
-In the App.js file, I've imported this `ProjectDetail` component and then proceeded to add it to the JSX below ProjectList.
+In the App.js file, I've imported the `ProjectDetail` and `Home` components and then proceeded to added them to the JSX.
 
+```jsx
+return (
+  <div className={isDarkMode ? "App" : "App light"}>
+    <Header
+      isDarkMode={isDarkMode}
+      onToggleDarkMode={onToggleDarkMode}
+    />
+    <Home />
+    {renderForm()}
+    <button onClick={() => fetchProjects()}><BiRefresh /></button>
+    <ProjectList 
+      projects={projects} 
+      enterProjectEditModeFor={enterProjectEditModeFor}
+      onDeleteProject={onDeleteProject}
+      onUpdateProject={onUpdateProject}
+    />
+    <ProjectDetail />
+  </div>
+);
 ```
+
+Add Navigation Links to `Header.js`
+
+```jsx
+// src/components/Header.js
+return (
+  <header>
+    <nav>
+      <h1 className="branding">
+        <span className="logo">{"//"}</span>
+        Project Showcase
+      </h1>
+      <div className="navigation">
+        <a className="button" href="/projects">
+          All Projects
+        </a>
+        <a className="button" href="/projects/new">
+          Add Project
+        </a>
+        <button onClick={handleClick}>{isDarkMode ? 'Dark' : 'Light'} Mode</button>
+      </div>
+    </nav>
+  </header>
+);
 ```
