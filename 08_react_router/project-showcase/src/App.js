@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import Header from './components/Header';
+import Home from './components/Home';
 import ProjectForm from './components/ProjectForm';
 import ProjectList from './components/ProjectList';
 import ProjectEditForm from './components/ProjectEditForm';
+import ProjectDetail from './components/ProjectDetail';
 import { BiRefresh } from 'react-icons/bi'
 
 
@@ -82,6 +84,7 @@ function App() {
         isDarkMode={isDarkMode}
         onToggleDarkMode={onToggleDarkMode}
       />
+      <Home />
       {renderForm()}
       <button onClick={() => fetchProjects()}><BiRefresh /></button>
       <ProjectList 
@@ -90,6 +93,7 @@ function App() {
         onDeleteProject={onDeleteProject}
         onUpdateProject={onUpdateProject}
       />
+      <ProjectDetail />
     </div>
   );
 }

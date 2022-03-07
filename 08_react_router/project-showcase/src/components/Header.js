@@ -11,13 +11,23 @@ function Header({
   }
 
   return (
-    <header>
-      <h1>
-        <span className="logo">{"//"}</span>
-        Project Showcase
-      </h1>
-      <button onClick={handleClick}>{isDarkMode ? "Light" : "Dark"} Mode</button>
-    </header>
+    
+      <nav>
+        <h1 className="branding">
+          <span className="logo">{"//"}</span>
+          Project Showcase
+        </h1>
+        <div className="navigation">
+          <a className="button" href="/projects">
+            All Projects
+          </a>
+          <a className="button" href="/projects/new">
+            Add Project
+          </a>
+          <button onClick={handleClick}>{isDarkMode ? 'Dark' : 'Light'} Mode</button>
+        </div>
+      </nav>
+    
   );
 }
 
