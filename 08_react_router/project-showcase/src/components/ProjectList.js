@@ -3,7 +3,6 @@ import ProjectListItem from "./ProjectListItem";
 
 function ProjectList({
   projects,
-  enterProjectEditModeFor,
   onDeleteProject,
   onUpdateProject
 }) {
@@ -24,7 +23,6 @@ function ProjectList({
       <ProjectListItem
         key={project.id}
         {...project}
-        enterProjectEditModeFor={enterProjectEditModeFor}
         onDeleteProject={onDeleteProject}
         onUpdateProject={onUpdateProject}
       />

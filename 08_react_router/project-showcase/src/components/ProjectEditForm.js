@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { useParams, useHistory } from 'react-router-dom';
 
-function ProjectEditForm({ projectToEdit, onUpdateProject }) {
+function ProjectEditForm({ onUpdateProject }) {
   const [formState, setFormState] = useState({
     name: "",
     about: "",
@@ -9,12 +10,14 @@ function ProjectEditForm({ projectToEdit, onUpdateProject }) {
     image: ""
   })
   const { name, about, phase, link, image } = formState;
+  const { id } = useParams();
+  const history = useHistory();
 
   useEffect(() => {
-    fetch(`http://localhost:4000/projects/${projectToEdit}`)
+    fetch(`http://localhost:4000/projects/${id}`)
       .then(res => res.json())
       .then(project => setFormState(project))
-  }, [projectToEdit])
+  }, [id])
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -24,7 +27,7 @@ function ProjectEditForm({ projectToEdit, onUpdateProject }) {
   function handleSubmit(event) {
     event.preventDefault();
     // fill me in!
-    fetch(`http://localhost:4000/projects/${projectToEdit}`, {
+    fetch(`http://localhost:4000/projects/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"
@@ -34,6 +37,7 @@ function ProjectEditForm({ projectToEdit, onUpdateProject }) {
       .then(res => res.json())
       .then(updatedProject => {
         onUpdateProject(updatedProject)
+        history.push(`/projects/${id}`)
       })
   }
   
