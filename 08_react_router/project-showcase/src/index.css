@@ -124,11 +124,11 @@ nav {
   margin: 0 0.5rem;
 }
 
-header h1 a {
+nav h1 a {
   border-bottom: none;
 }
 
-header h1 a:hover {
+nav h1 a:hover {
   border-bottom: none;
   background-color: transparent;
 }

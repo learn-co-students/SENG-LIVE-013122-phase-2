@@ -13,12 +13,12 @@ function Header({
 
   return (
     <nav>
-      <Link to="/">
-        <h1 className="branding">
+      <h1 className="branding">
+        <Link to="/">
           <span className="logo">{"//"}</span>
           Project Showcase
-        </h1>
-      </Link>
+        </Link>
+      </h1>
       <div className="navigation">
         <NavLink className="button" exact to="/projects">
           All Projects
