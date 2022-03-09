@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useForm } from '../hooks/useForm';
 
 function ProjectForm({ onCreateProject }) {
   const initialFormState = {
@@ -8,12 +9,13 @@ function ProjectForm({ onCreateProject }) {
     link: "",
     image: ""
   }
-  const [formState, setFormState] = useState(initialFormState);
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormState(formState => ({...formState, [name]: value}))
-  }
+  // const [formState, setFormState] = useState(initialFormState);
+  const { formState, setFormState, handleChange } = useForm(initialFormState);
+  const nameInputRef = useRef(null);
+  
+  useEffect(() => {
+    nameInputRef.current.focus();
+  },[])
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -47,6 +49,7 @@ function ProjectForm({ onCreateProject }) {
           type="text"
           id="name"
           name="name"
+          ref={nameInputRef}
           onChange={handleChange}
           value={formState.name}
         />

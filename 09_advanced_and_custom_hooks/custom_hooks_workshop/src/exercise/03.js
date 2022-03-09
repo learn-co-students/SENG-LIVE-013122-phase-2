@@ -4,7 +4,7 @@ import hasi from "../data/assets/hasi.png";
 export function useMouseCoordinates() {
   // ✅ get the setCoordinates function back too!
   // 👀 const [coordinates, setCoordinates] = useState(...)
-  const [coordinates] = useState({
+  const [coordinates, setCoordinates] = useState({
     clientX: 0,
     clientY: 0,
   });
@@ -15,18 +15,25 @@ export function useMouseCoordinates() {
      set state with the clientX and clientY coordinates from the event
      👀 function handler(event) {}
     */
-
+    function handler(event) {
+      setCoordinates({
+        clientX: event.clientX,
+        clientY: event.clientY
+      })
+    }
     /* 
      ✅ attach an event listener to the window for the mousemove event
      📃 https://developer.mozilla.org/en-US/docs/Web/API/Element/mousemove_event
      👀 window.addEventListener("mousemove", handler)
     */
+    window.addEventListener("mousemove", handler)
 
     return function cleanup() {
       /* 
        ✅ make sure to clean up your event listeners when your hook is no longer in use!
        👀 window.removeEventListener("mousemove", handler)
       */
+      window.removeEventListener("mousemove", handler)
     };
   }, []);
 
@@ -35,7 +42,7 @@ export function useMouseCoordinates() {
 
 export default function MyComponent() {
   const { clientX, clientY } = useMouseCoordinates();
-
+  console.log('rendering');
   return (
     <div style={{ cursor: "none", width: "100%", height: "100%" }}>
       <h2>Mouse X: {clientX}</h2>
