@@ -24,6 +24,8 @@ export default function App() {
       <h2>CenteredLayout</h2>
       <CenteredLayout>
         <Box background="papayawhip">:)</Box>
+        <Box background="papayawhip">:)</Box>
+        <Box background="papayawhip">:)</Box>
       </CenteredLayout>
 
       <h2>DeconstructedPancakeLayout</h2>
